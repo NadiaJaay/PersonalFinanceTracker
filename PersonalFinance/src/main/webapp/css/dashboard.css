@@ -1,0 +1,171 @@
+@charset "UTF-8";
+
+/* Root Variables */
+:root {
+    --font-primary: "Nunito", sans-serif;
+    --color-bg: #F9F9F9; 
+    --color-primary: #85ae6e; 
+    --color-secondary: #79d156; 
+    --color-text-dark: #333333;
+    --color-text-light: #FFFFFF;
+    --color-input-bg: #FFFFFF; 
+    --color-input-border: #DDDDDD; 
+}
+
+/* Global Styles */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg);
+    color: var(--color-text-dark);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    background-color: var(--color-primary);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-text-light);
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--color-text-light);
+}
+
+.navbar a {
+    color: var(--color-text-light);
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+.navbar a:hover {
+    color: var(--color-secondary);
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0; 
+    width: 250px;
+    height: 100%;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    transform: translateX(100%); 
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.sidebar h1 {
+    margin-bottom: 2rem;
+    color: var(--color-text-light);
+    font-size: 1.5rem;
+}
+
+.sidebar nav a {
+    text-decoration: none;
+    color: var(--color-text-light);
+    padding: 0.5rem 0;
+    font-size: 1rem;
+}
+
+/* Toggle Button */
+.sidebar-toggle {
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: black; 
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1100;
+}
+
+.sidebar a {
+    display: block;
+    padding: 1rem;
+    color: white; 
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.sidebar a:hover {
+    background-color: var(--color-secondary); 
+    color: black; 
+}
+
+
+
+/* Dashboard Container */
+.dashboard-container {
+    margin-top: 4rem;
+    margin-right: 250px; 
+    background-color: var(--color-input-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    color: var(--color-text-dark);
+}
+
+
+/* Dashboard Container */
+.dashboard-container {
+    margin-top: 4rem;
+    margin-left: 250px; 
+    background-color: var(--color-input-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    color: var(--color-text-dark);
+}
+
+/* Heading and Welcome Message */
+.dashboard-container h2 {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-container p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text-dark);
+}
+
+
+/* Footer */
+.footer {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    text-align: center;
+    padding: 0.2rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.9rem;
+}
