@@ -91,6 +91,7 @@ public class ApplicationDao {
                             + "account_id VARCHAR(36) NOT NULL PRIMARY KEY, "
                             + "user_id VARCHAR(36), " 
                             + "account_name VARCHAR(35) NOT NULL, "
+                            + "description VARCHAR (255), "
                             + "balance DECIMAL(10,2) NOT NULL, "
                             + "created_at DATETIME NOT NULL, "
                             + "FOREIGN KEY (user_id) REFERENCES " + USERS_TABLE + "(user_id) ON DELETE SET NULL"
