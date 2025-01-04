@@ -7,7 +7,6 @@ public class User {
     private String password;
     private String first_name;
     private String last_name;
-    private String address_id;
     private boolean is_verified;
     
     public User(String first_name, String last_name, String password, boolean is_verified) {
@@ -32,7 +31,6 @@ public class User {
     this.password = password;
     this.first_name = first_name;
     this.last_name = last_name;
-    this.address_id = address_id;
     this.is_verified = is_verified;
 }
     
