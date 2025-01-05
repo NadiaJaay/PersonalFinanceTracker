@@ -151,12 +151,14 @@ public class ApplicationDao {
                             + "goal_name VARCHAR(35) NOT NULL, "
                             + "target_amount DECIMAL(10,2) NOT NULL, "
                             + "current_amount DECIMAL(10,2) NOT NULL, "
+                            + "description TEXT, " 
+                            + "is_completed BOOLEAN DEFAULT FALSE, " 
                             + "end_date DATETIME NOT NULL, "
                             + "FOREIGN KEY (user_id) REFERENCES " + USERS_TABLE + "(user_id) ON DELETE SET NULL"
                             + ")";
                             
                     stmt.executeUpdate(sql);
-                    System.out.println("Created User Table");
+                    System.out.println("Created Goals Table");
                 }
             } catch (SQLException e) {
                 DBUtil.processException(e);
