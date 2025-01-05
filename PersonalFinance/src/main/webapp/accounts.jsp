@@ -16,10 +16,10 @@
     <div class="sidebar" id="sidebar">
         <h1>PFT</h1>
         <nav>
-            <a href="dashboard.jsp">Dashboard</a>
+			<a href="dashboard">Dashboard</a>
 			<a href="accounts?action=list">Accounts</a>
-            <a href="transactions.jsp">Transactions</a>
-            <a href="goals.jsp">Goals</a>
+    		<a href="transactions?action=list">Transactions</a>
+    		<a href="goals?action=list">Goals</a>
             <a href="index.jsp">Logout</a>
         </nav>
     </div>
@@ -48,7 +48,7 @@
             %>
                         <div class="book-card">
                             <h3><%= account.getAccountName() %> Account</h3>
-   		 					<p><strong>Balance:</strong> $<%= String.format("%.2f", account.getBalance()) %></p>
+							<p><strong>Balance:</strong> $<%= String.format("%,.2f", account.getBalance()) %></p>
 							<p><strong>Description:</strong> <%= (account.getDescription() != null ? account.getDescription() : "No description provided") %></p>
                             <p><strong>Created On:</strong> <%= account.getCreatedAt() %></p>
                             <div class="card-actions">

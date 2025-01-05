@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
             if ("sysAdmin".equalsIgnoreCase(role.getRoleName())) {
                 response.sendRedirect("adminDashboard.jsp");
             } else if ("member".equalsIgnoreCase(role.getRoleName())) {
-                response.sendRedirect("dashboard.jsp");
+                response.sendRedirect("dashboard");
             } else {
                 request.setAttribute("message", "Role not recognized. Contact the administrator.");
                 request.getRequestDispatcher("index.jsp").forward(request, response);

@@ -14,10 +14,10 @@
     <div class="sidebar" id="sidebar">
         <h1>PFT</h1>
         <nav>
-            <a href="dashboard.jsp">Dashboard</a>
-            <a href="accounts?action=list">Accounts</a>
-            <a href="transactions.jsp">Transactions</a>
-            <a href="goals.jsp">Goals</a>
+			<a href="dashboard">Dashboard</a>
+			<a href="accounts?action=list">Accounts</a>
+    		<a href="transactions?action=list">Transactions</a>
+    		<a href="goals?action=list">Goals</a>
             <a href="index.jsp">Logout</a>
         </nav>
     </div>

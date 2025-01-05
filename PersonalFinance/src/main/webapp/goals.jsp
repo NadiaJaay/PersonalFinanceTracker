@@ -16,10 +16,10 @@
     <div class="sidebar" id="sidebar">
         <h1>PFT</h1>
         <nav>
-            <a href="dashboard.jsp">Dashboard</a>
-            <a href="accounts?action=list">Accounts</a>
-            <a href="transactions.jsp">Transactions</a>
-            <a href="goals?action=list">Goals</a>
+			<a href="dashboard">Dashboard</a>
+			<a href="accounts?action=list">Accounts</a>
+    		<a href="transactions?action=list">Transactions</a>
+    		<a href="goals?action=list">Goals</a>
             <a href="index.jsp">Logout</a>
         </nav>
     </div>
@@ -51,8 +51,8 @@
             %>
                         <div class="book-card">
                             <h3><%= goal.getGoalName() %> Goal</h3>
-                            <p><strong>Target Amount:</strong> $<%= String.format("%.2f", goal.getTargetAmount()) %></p>
-                            <p><strong>Current Amount:</strong> $<%= String.format("%.2f", goal.getCurrentAmount()) %></p>
+                            <p><strong>Target Amount:</strong> $<%= String.format("%,.2f", goal.getTargetAmount()) %></p>
+                            <p><strong>Current Amount:</strong> $<%= String.format("%,.2f", goal.getCurrentAmount()) %></p>
                             <p><strong>Description:</strong> <%= (goal.getDescription() != null ? goal.getDescription() : "No description provided") %></p>
                             <p><strong>End Date:</strong> <%= goal.getEndDate() %></p>
                             <p><strong>Status:</strong> <%= goal.getIsComplete() ? "Complete" : "In Progress" %></p>
