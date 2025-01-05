@@ -144,7 +144,7 @@ public class ApplicationDao {
                 Statement stmt = conn.createStatement();
             ) {
                 if (!tableExists(conn, SAVINGS_TABLE)) {
-                    System.out.print("Creating Saving Table...");
+                    System.out.print("Creating Goals Table...");
                     String sql = "CREATE TABLE IF NOT EXISTS " + SAVINGS_TABLE + " ("
                             + "goal_id VARCHAR(36) NOT NULL PRIMARY KEY, "
                             + "user_id CHAR(36), " 
