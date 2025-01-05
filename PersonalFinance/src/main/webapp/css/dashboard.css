@@ -358,3 +358,66 @@ body {
     background-color: #218838;
 }
 
+/* Chart Container for Side-by-Side Layout */
+.charts-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between the charts */
+    margin: 20px auto; /* Center the charts container */
+}
+
+.chart-box {
+    width: 30%; /* Adjust the size of each chart */
+    max-width: 250px; /* Set a max width for responsiveness */
+}
+
+.goal-completion-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px; 
+}
+
+.goal-bar-container {
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    height: 20px;
+    width: 100%; 
+    margin-bottom: 10px; 
+}
+
+.goal-bar {
+    background-color: #4CAF50;
+    height: 100%;
+    border-radius: 5px;
+}
+
+
+.filter-container {
+    display: flex;
+    justify-content: space-between; /* Space between the filter and button */
+    align-items: center;
+    margin-bottom: 20px; /* Add spacing below the filter section */
+}
+
+.filter-form {
+    margin: 0; /* Remove default margins */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between label and dropdown */
+}
+
+.dropdown-filter {
+    padding: 5px 10px; /* Add padding for better appearance */
+    border-radius: 5px; /* Rounded edges */
+    border: 1px solid var(--color-input-border); /* Match theme */
+}
+
+.add-new-account {
+    padding: 10px 20px; /* Ensure consistent padding */
+    margin: 0; /* Remove default margin */
+}
+
+

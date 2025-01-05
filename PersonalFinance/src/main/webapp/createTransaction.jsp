@@ -83,7 +83,7 @@
             <input type="date" id="transactionDate" name="transactionDate" required><br><br>
 
             <!-- Description -->
-            <label for="description">Description (Optional):</label>
+            <label for="description">Description:</label>
             <input type="text" id="description" name="description" maxlength="255"><br><br>
 
             <!-- Buttons -->
