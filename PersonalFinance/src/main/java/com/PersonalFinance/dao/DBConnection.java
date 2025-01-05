@@ -22,6 +22,7 @@ public class DBConnection {
 		ApplicationDao.getDao().createSavingsTable();
 		ApplicationDao.getDao().createUserRoleTable();
 		ApplicationDao.getDao().createVerificationTable();
+		ApplicationDao.getDao().createPasswordResetTable();
 		
 	}	
 	
