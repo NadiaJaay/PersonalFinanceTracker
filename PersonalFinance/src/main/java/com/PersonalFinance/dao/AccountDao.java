@@ -5,7 +5,9 @@ import com.PersonalFinance.libs.UUIDGenerator;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AccountDao {
 
@@ -169,4 +171,28 @@ public class AccountDao {
 
         return account;
     }
+    
+    public static Map<String, Double> fetchTotalBalancesByAccountType(String userId) {
+        Map<String, Double> accountTypeBalances = new HashMap<>();
+        String sql = "SELECT account_name, SUM(balance) AS total_balance " +
+                     "FROM accounts WHERE user_id = ? GROUP BY account_name";
+
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String accountType = rs.getString("account_name");
+                double totalBalance = rs.getDouble("total_balance");
+                accountTypeBalances.put(accountType, totalBalance);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return accountTypeBalances;
+    }
+
 }

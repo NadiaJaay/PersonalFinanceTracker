@@ -184,4 +184,34 @@ public class TransactionDao {
 
         return totals;
     }
+    
+    public static Map<String, Double> fetchSpendingByCategory(String userId) {
+        Map<String, Double> spendingByCategory = new HashMap<>();
+        String sql = "SELECT category, SUM(amount) AS total " +
+                     "FROM transactions " +
+                     "WHERE user_id = ? AND type = 'Expense' " + // Filter only expenses
+                     "GROUP BY category";
+
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String category = rs.getString("category");
+                Double total = rs.getDouble("total");
+                spendingByCategory.put(category, total);
+            }
+            
+            System.out.println("Spending by Category SQL Result: " + spendingByCategory);
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return spendingByCategory;
+    }
+
 }

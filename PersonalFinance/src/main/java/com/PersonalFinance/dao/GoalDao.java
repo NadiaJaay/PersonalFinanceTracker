@@ -156,4 +156,31 @@ public class GoalDao {
         }
         return false;
     }
+    
+ // Fetch percentage of completed goals
+    public static float fetchGoalCompletionPercentage(String userId) {
+        String sql = "SELECT " +
+                     "(SELECT COUNT(*) FROM savings WHERE user_id = ? AND is_completed = true) AS completed_count, " +
+                     "(SELECT COUNT(*) FROM savings WHERE user_id = ?) AS total_count";
+
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, userId);
+            stmt.setString(2, userId);
+
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                int completedCount = resultSet.getInt("completed_count");
+                int totalCount = resultSet.getInt("total_count");
+
+                if (totalCount == 0) return 0; // Avoid division by zero
+                return (float) completedCount / totalCount * 100;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

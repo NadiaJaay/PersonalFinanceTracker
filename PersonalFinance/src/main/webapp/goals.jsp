@@ -29,17 +29,19 @@
         <h2 class="welcome-message">Your Goals</h2>
 
         <!-- Dropdown Filter -->
-        <form method="GET" action="goals" class="filter-form">
-            <input type="hidden" name="action" value="list">
-            <label for="status">Filter by Status:</label>
-            <select id="status" name="status" onchange="this.form.submit()" class="dropdown-filter">
-                <option value="pending" <%= "pending".equals(request.getParameter("status")) ? "selected" : "" %>>Pending Goals</option>
-                <option value="completed" <%= "completed".equals(request.getParameter("status")) ? "selected" : "" %>>Completed Goals</option>
-            </select>
-        </form>
-
-        <!-- Add New Goal Button -->
-        <a href="createGoal.jsp" class="add-new-account">Add New Goal</a>
+        <div class="filter-container">
+		    <form method="GET" action="goals" class="filter-form">
+		        <input type="hidden" name="action" value="list">
+		        <label for="status">Filter by Status:</label>
+		        <select id="status" name="status" onchange="this.form.submit()" class="dropdown-filter">
+		            <option value="none" <%= (request.getParameter("status") == null || "none".equals(request.getParameter("status"))) ? "selected" : "" %>>None</option>
+		            <option value="pending" <%= "pending".equals(request.getParameter("status")) ? "selected" : "" %>>Pending Goals</option>
+		            <option value="completed" <%= "completed".equals(request.getParameter("status")) ? "selected" : "" %>>Completed Goals</option>
+		        </select>
+		    </form>
+		
+		    <a href="createGoal.jsp" class="add-new-account">Add New Goal</a>
+		</div>
 
         <!-- Display Goals -->
         <div class="card-container">
