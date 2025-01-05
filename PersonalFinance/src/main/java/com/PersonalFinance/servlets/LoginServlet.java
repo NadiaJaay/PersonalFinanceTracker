@@ -3,6 +3,7 @@ package com.PersonalFinance.servlets;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ public class LoginServlet extends HttpServlet {
 
         String email = request.getParameter("email").toLowerCase();
         String password = request.getParameter("password");
+        String rememberMe = request.getParameter("remember");
 
         try {
             // Authenticate user
@@ -59,6 +61,20 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("loggedInUser", user.getUsername());
             session.setAttribute("email", email);
             session.setAttribute("role", role.getRoleName());
+            
+            // Handle "Remember Me" functionality
+            if ("on".equals(rememberMe)) {
+                // Create cookies for email
+                Cookie emailCookie = new Cookie("userEmail", email);
+                emailCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+                emailCookie.setHttpOnly(true); // Secure the cookie
+                response.addCookie(emailCookie);
+            } else {
+                // Clear the cookie if "Remember Me" is unchecked
+                Cookie emailCookie = new Cookie("userEmail", null);
+                emailCookie.setMaxAge(0); 
+                response.addCookie(emailCookie);
+            }
 
             // Debugging: Print session attributes
             System.out.println("Login successful - User ID: " + userId);

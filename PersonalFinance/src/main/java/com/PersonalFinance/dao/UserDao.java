@@ -230,6 +230,41 @@ public class UserDao {
 
         return userId;
     }
+    
+ // Update user password
+ 	public static void updatePassword(String user_id, String newPassword) {
+ 	    try (Connection connection = DBConnection.getDBInstance()) {
+ 	        String query = "UPDATE users SET password = ? WHERE user_id = ?";
+ 	        PreparedStatement statement = connection.prepareStatement(query);
+ 	        statement.setString(1, newPassword); 
+ 	        statement.setString(2, user_id);
+
+ 	        statement.executeUpdate();
+ 	    } catch (SQLException e) {
+ 	        DBUtil.processException(e);
+ 	    } catch (ClassNotFoundException e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	}
+ 	
+ // Get user ID by email
+ 	public static String getUserIdByEmail(String email) {
+ 	    try (Connection connection = DBConnection.getDBInstance()) {
+ 	        String query = "SELECT user_id FROM users WHERE email = ?";
+ 	        PreparedStatement statement = connection.prepareStatement(query);
+ 	        statement.setString(1, email);
+
+ 	        ResultSet resultSet = statement.executeQuery();
+ 	        if (resultSet.next()) {
+ 	            return resultSet.getString("user_id");
+ 	        }
+ 	    } catch (SQLException e) {
+ 	        DBUtil.processException(e);
+ 	    } catch (ClassNotFoundException e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	    return null;
+ 	}
 
 
 }

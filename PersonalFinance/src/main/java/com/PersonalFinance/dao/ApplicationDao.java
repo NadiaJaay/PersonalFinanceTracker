@@ -18,6 +18,7 @@ public class ApplicationDao {
 	public static final String ROLES_TABLE = "roles";
     public static final String USER_ROLE_TABLE = "user_role";
 	public static final String VERIFICATION_TABLE = "verification";
+    public static final String PASSWORD_RESET_TABLE = "password_reset";
 
 	
     private ApplicationDao() {}
@@ -241,6 +242,30 @@ public class ApplicationDao {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+    }
+    
+    public void createPasswordResetTable() {
+        try (
+            Connection conn = DBConnection.getDBInstance();
+            Statement stmt = conn.createStatement();
+        ) {
+            if (!tableExists(conn, "password_reset")) {
+                System.out.print("Creating Password Reset Table...");
+                String sql = "CREATE TABLE IF NOT EXISTS password_reset ("
+                        + "reset_id VARCHAR(36) NOT NULL PRIMARY KEY, "
+                        + "user_id VARCHAR(36) NOT NULL, "
+                        + "token VARCHAR(64) NOT NULL UNIQUE, "
+                        + "created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, "
+                        + "status ENUM('pending', 'completed') NOT NULL DEFAULT 'pending', "
+                        + "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE)";
+                stmt.executeUpdate(sql);
+                System.out.println("Created Password Reset Table");
+            }
+        } catch (SQLException e) {
+            DBUtil.processException(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
     
     // Default Admin and member data 
