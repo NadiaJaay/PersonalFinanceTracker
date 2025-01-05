@@ -314,3 +314,47 @@ body {
 .back-button:hover {
     background-color: #a71d2a;
 }
+
+/* Filter Links */
+.filter-links {
+    margin-bottom: 20px;
+}
+
+.btn-filter {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.btn-filter:hover {
+    background-color: #0056b3;
+}
+
+/* Goal Card */
+.goal-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.goal-card h3 {
+    margin-top: 0;
+}
+
+.btn-mark-complete {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-mark-complete:hover {
+    background-color: #218838;
+}
+
