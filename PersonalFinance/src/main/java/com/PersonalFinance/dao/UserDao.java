@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.PersonalFinance.beans.User;
 import com.PersonalFinance.dao.DBConnection;
 import com.PersonalFinance.dao.DBUtil;
+import com.PersonalFinance.libs.AdminConfig;
 import com.PersonalFinance.libs.TokenGenerator;
 import com.PersonalFinance.libs.UUIDGenerator;
 import com.PersonalFinance.services.JavaEmailService;
@@ -265,6 +268,170 @@ public class UserDao {
  	    }
  	    return null;
  	}
+ 	
+ 	public static void createAdminIfNotExists() {
+ 	    // Fetch admin credentials from AdminConfig
+ 	    String adminEmail = AdminConfig.ADMIN_EMAIL;
+ 	    String adminUsername = AdminConfig.ADMIN_USERNAME;
+ 	    String adminPassword = AdminConfig.ADMIN_PASSWORD;
 
+ 	    try (Connection connection = DBConnection.getDBInstance()) {
+ 	        // Check if admin user exists by email or username
+ 	        String checkUserSql = "SELECT user_id FROM users WHERE email = ? OR username = ?";
+ 	        try (PreparedStatement checkStmt = connection.prepareStatement(checkUserSql)) {
+ 	            checkStmt.setString(1, adminEmail);
+ 	            checkStmt.setString(2, adminUsername);
+
+ 	            try (ResultSet rs = checkStmt.executeQuery()) {
+ 	                if (rs.next()) {
+ 	                    System.out.println("Admin user already exists.");
+ 	                    return; // Exit if admin user already exists
+ 	                }
+ 	            }
+ 	        }
+
+ 	        // Admin doesn't exist, create the user
+ 	        String roleId = RoleDao.findRoleIdByName("sysAdmin");
+ 	        if (roleId == null) {
+ 	            System.err.println("Admin role 'sysAdmin' not found in roles table.");
+ 	            return;
+ 	        }
+
+ 	        String userId = createUser(adminEmail, adminUsername, adminPassword, "System", "Admin", roleId);
+ 	        if (userId != null) {
+ 	            System.out.println("Admin user created successfully with ID: " + userId);
+ 	        }
+ 	    } catch (SQLException e) {
+ 	        DBUtil.processException(e);
+ 	    } catch (ClassNotFoundException e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	}
+
+ 	
+ 	public static List<User> getAllUsers() {
+ 	    List<User> users = new ArrayList<>();
+ 	    String query = "SELECT * FROM users";
+ 	    try (Connection connection = DBConnection.getDBInstance();
+ 	         PreparedStatement statement = connection.prepareStatement(query);
+ 	         ResultSet rs = statement.executeQuery()) {
+ 	        while (rs.next()) {
+ 	            users.add(new User(
+ 	                rs.getString("user_id"),
+ 	                rs.getString("username"),
+ 	                rs.getString("email"),
+ 	                null, 
+ 	                rs.getString("first_name"),
+ 	                rs.getString("last_name"),
+ 	                rs.getBoolean("is_verified")
+ 	            ));
+ 	        }
+ 	    } catch (SQLException | ClassNotFoundException e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	    return users;
+ 	}
+
+ 	public static boolean deleteUser(String userId) {
+ 	    String query = "DELETE FROM users WHERE user_id = ?";
+ 	    try (Connection connection = DBConnection.getDBInstance();
+ 	         PreparedStatement statement = connection.prepareStatement(query)) {
+ 	        statement.setString(1, userId);
+ 	        return statement.executeUpdate() > 0;
+ 	    } catch (SQLException | ClassNotFoundException e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	    return false;
+ 	}
+ 	
+ 	public static boolean updateVerificationStatus(String userId, boolean isVerified) {
+ 	    try (Connection connection = DBConnection.getDBInstance()) {
+ 	        String query = "UPDATE users SET is_verified = ? WHERE user_id = ?";
+ 	        PreparedStatement statement = connection.prepareStatement(query);
+ 	        statement.setBoolean(1, isVerified);
+ 	        statement.setString(2, userId);
+
+ 	        int rowsUpdated = statement.executeUpdate();
+ 	        return rowsUpdated > 0; 
+ 	    } catch (SQLException e) {
+ 	        DBUtil.processException(e);
+ 	    } catch (ClassNotFoundException e) {
+ 	        e.printStackTrace();
+ 	    }
+ 	    return false; // Return false if the update failed
+ 	}
+ 	
+ 	public static int getTotalUsersForMonth(int month, int year) throws SQLException, ClassNotFoundException {
+        String query = "SELECT COUNT(*) AS total FROM users WHERE MONTH(created_at) = ? AND YEAR(created_at) = ?";
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static int getTotalUsersAllTime() throws SQLException, ClassNotFoundException {
+        String query = "SELECT COUNT(*) AS total FROM users";
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        }
+        return 0;
+    }
+    
+ // Update user details
+    public static boolean updateUser(String userId, String username, String email, String firstName, String lastName) {
+        String query = "UPDATE users SET username = ?, email = ?, first_name = ?, last_name = ? WHERE user_id = ?";
+
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            statement.setString(2, email);
+            statement.setString(3, firstName);
+            statement.setString(4, lastName);
+            statement.setString(5, userId);
+
+            return statement.executeUpdate() > 0; // Return true if the update was successful
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false; 
+    }
+    public static User getUserById(String userId) {
+        User user = null;
+        String query = "SELECT * FROM users WHERE user_id = ?";
+
+        try (Connection connection = DBConnection.getDBInstance();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getString("user_id"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        null, // Do not fetch the password
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getBoolean("is_verified")
+                    );
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 
 }
