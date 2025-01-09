@@ -1,0 +1,1 @@
+web: java -jar /usr/local/tomcat/bin/catalina.jar run /src/deployment/PersonalFinance.war
