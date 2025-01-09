@@ -9,7 +9,7 @@ import com.PersonalFinance.libs.DBType;
 
 public class DBUtil {
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "jujooste";
     private static String M_CONN_STRING = "jdbc:mysql://localhost:3306/";
     private static String H_CONN_STRING = "jdbc:hsqldb://localhost/";
 

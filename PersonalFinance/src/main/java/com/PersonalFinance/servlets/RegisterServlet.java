@@ -37,7 +37,6 @@ public class RegisterServlet extends HttpServlet {
         String last_name = request.getParameter("last_name");
 
         try {
-            // Validation checks...
 
             // Retrieve the member role ID
             String member_role_id = RoleDao.findRoleIdByName("member");

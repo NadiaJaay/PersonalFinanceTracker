@@ -66,12 +66,13 @@ public class ApplicationDao {
                             + "first_name VARCHAR(35) NOT NULL, "
                             + "last_name VARCHAR(35) NOT NULL, "
                             + "is_verified TINYINT NOT NULL DEFAULT 0, "
+                            + "created_at DATETIME DEFAULT CURRENT_TIMESTAMP, "
                             + "role_id VARCHAR(36), "
                             + "FOREIGN KEY (role_id) REFERENCES " + ROLES_TABLE + "(role_id) ON DELETE CASCADE"
                             + ")";
                             
                     stmt.executeUpdate(sql);
-                    insertDefaultUser(conn); 
+                    //insertDefaultUser(conn); 
                     System.out.println("Created User Table");
                 }
             } catch (SQLException e) {
@@ -269,53 +270,43 @@ public class ApplicationDao {
     }
     
     // Default Admin and member data 
-    private void insertDefaultUser(Connection conn) throws SQLException {
-        String checkUserSql = "SELECT email FROM " + USERS_TABLE + " WHERE email = ?";
-        String checkRoleSql = "SELECT role_id FROM " + ROLES_TABLE + " WHERE role_id = ?";
-        String insertUserSql = "INSERT INTO " + USERS_TABLE + " (user_id, email, username, password, first_name, last_name, is_verified, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (
-            PreparedStatement checkUserStmt = conn.prepareStatement(checkUserSql);
-            PreparedStatement checkRoleStmt = conn.prepareStatement(checkRoleSql);
-            PreparedStatement insertStmt = conn.prepareStatement(insertUserSql);
-        ) {
-            String[][] defaultUsers = {
-                {"5ac66fc0-b37d-11ef-bf20-325096b39f47", "admin@email.com", "admin", "password", "System", "Admin", "true", "35ea87d3-7df2-4cf3-9e4c-d326027cbe95"},
-                {"5ac67524-b37d-11ef-a678-325096b39f47", "member@email.com", "member", "password", "Regular", "User", "false", "e45cfed3-ed61-49ba-9215-2c44ee23bdae"}
-            };
-
-            for (String[] user : defaultUsers) {
-                // Check if user already exists
-                checkUserStmt.setString(1, user[1]);
-                try (ResultSet rs = checkUserStmt.executeQuery()) {
-                    if (rs.next()) {
-                        System.err.println("User already exists with email: " + user[1]);
-                        continue; // Skip this entry
-                    }
-                }
-
-                // Check if role exists
-                checkRoleStmt.setString(1, user[7]);
-                try (ResultSet rs = checkRoleStmt.executeQuery()) {
-                    if (!rs.next()) {
-                        System.err.println("Role ID does not exist: " + user[7]);
-                        continue; // Skip this entry
-                    }
-                }
-
-                // Insert user
-                insertStmt.setString(1, user[0]); // user_id
-                insertStmt.setString(2, user[1]); // email
-                insertStmt.setString(3, user[2]); // username
-                insertStmt.setString(4, user[3]); // password
-                insertStmt.setString(5, user[4]); // first_name
-                insertStmt.setString(6, user[5]); // last_name
-                insertStmt.setBoolean(7, Boolean.parseBoolean(user[6])); // is_verified
-                insertStmt.setString(8, user[7]); // role_id
-                insertStmt.executeUpdate();
-            }
-        }
-    }
+	/*
+	 * private void insertDefaultUser(Connection conn) throws SQLException { String
+	 * checkUserSql = "SELECT email FROM " + USERS_TABLE + " WHERE email = ?";
+	 * String checkRoleSql = "SELECT role_id FROM " + ROLES_TABLE +
+	 * " WHERE role_id = ?"; String insertUserSql = "INSERT INTO " + USERS_TABLE +
+	 * " (user_id, email, username, password, first_name, last_name, is_verified, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+	 * ;
+	 * 
+	 * try ( PreparedStatement checkUserStmt = conn.prepareStatement(checkUserSql);
+	 * PreparedStatement checkRoleStmt = conn.prepareStatement(checkRoleSql);
+	 * PreparedStatement insertStmt = conn.prepareStatement(insertUserSql); ) {
+	 * String[][] defaultUsers = { {"5ac66fc0-b37d-11ef-bf20-325096b39f47",
+	 * "admin@email.com", "admin", "password", "System", "Admin", "true",
+	 * "35ea87d3-7df2-4cf3-9e4c-d326027cbe95"},
+	 * {"5ac67524-b37d-11ef-a678-325096b39f47", "member@email.com", "member",
+	 * "password", "Regular", "User", "false",
+	 * "e45cfed3-ed61-49ba-9215-2c44ee23bdae"} };
+	 * 
+	 * for (String[] user : defaultUsers) { // Check if user already exists
+	 * checkUserStmt.setString(1, user[1]); try (ResultSet rs =
+	 * checkUserStmt.executeQuery()) { if (rs.next()) {
+	 * System.err.println("User already exists with email: " + user[1]); continue;
+	 * // Skip this entry } }
+	 * 
+	 * // Check if role exists checkRoleStmt.setString(1, user[7]); try (ResultSet
+	 * rs = checkRoleStmt.executeQuery()) { if (!rs.next()) {
+	 * System.err.println("Role ID does not exist: " + user[7]); continue; // Skip
+	 * this entry } }
+	 * 
+	 * // Insert user insertStmt.setString(1, user[0]); // user_id
+	 * insertStmt.setString(2, user[1]); // email insertStmt.setString(3, user[2]);
+	 * // username insertStmt.setString(4, user[3]); // password
+	 * insertStmt.setString(5, user[4]); // first_name insertStmt.setString(6,
+	 * user[5]); // last_name insertStmt.setBoolean(7,
+	 * Boolean.parseBoolean(user[6])); // is_verified insertStmt.setString(8,
+	 * user[7]); // role_id insertStmt.executeUpdate(); } } }
+	 */
 
     
     private void insertDefaultRoles(Connection conn) throws SQLException {
@@ -350,12 +341,10 @@ public class ApplicationDao {
     }
     
     private void insertDefaultUserRole(Connection conn) throws SQLException {
-        String checkUserSql = "SELECT user_id FROM " + USERS_TABLE + " WHERE user_id = ?";
         String checkRoleSql = "SELECT role_id FROM " + ROLES_TABLE + " WHERE role_id = ?";
         String insertUserRoleSql = "INSERT INTO " + USER_ROLE_TABLE + " (user_role_id, user_id, role_id, assigned_date, status) VALUES (?, ?, ?, ?, ?)";
 
         try (
-            PreparedStatement checkUserStmt = conn.prepareStatement(checkUserSql);
             PreparedStatement checkRoleStmt = conn.prepareStatement(checkRoleSql);
             PreparedStatement insertStmt = conn.prepareStatement(insertUserRoleSql);
         ) {
@@ -365,15 +354,6 @@ public class ApplicationDao {
             };
 
             for (String[] userRole : defaultUserRoles) {
-                // Validate user_id exists
-                checkUserStmt.setString(1, userRole[1]);
-                try (ResultSet userRs = checkUserStmt.executeQuery()) {
-                    if (!userRs.next()) {
-                        System.err.println("User ID does not exist: " + userRole[1]);
-                        continue; // Skip this entry
-                    }
-                }
-
                 // Validate role_id exists
                 checkRoleStmt.setString(1, userRole[2]);
                 try (ResultSet roleRs = checkRoleStmt.executeQuery()) {
@@ -383,13 +363,7 @@ public class ApplicationDao {
                     }
                 }
 
-                // Insert into user_role table
-                insertStmt.setString(1, userRole[0]); // user_role_id
-                insertStmt.setString(2, userRole[1]); // user_id
-                insertStmt.setString(3, userRole[2]); // role_id
-                insertStmt.setTimestamp(4, new Timestamp(System.currentTimeMillis())); // assigned_date
-                insertStmt.setString(5, userRole[3]); // status
-                insertStmt.executeUpdate();
+                System.out.println("Skipping role assignment for user ID: " + userRole[1] + " (user not created)");
             }
         }
     }

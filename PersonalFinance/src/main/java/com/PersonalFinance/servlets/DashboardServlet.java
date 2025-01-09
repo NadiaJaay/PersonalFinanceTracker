@@ -33,7 +33,7 @@ public class DashboardServlet extends HttpServlet {
         // Fetch income and expense totals
         Map<String, Double> incomeExpenseData = TransactionDao.fetchIncomeAndExpenseTotals(userId);
 
-        // Fetch total balances by account type (e.g., Checkings, Savings, Cash)
+        // Fetch total balances by account type 
         Map<String, Double> accountBalances = AccountDao.fetchTotalBalancesByAccountType(userId);
         String accountBalancesJson = new Gson().toJson(accountBalances);
         System.out.println("Account Balances: " + accountBalancesJson);
