@@ -92,6 +92,6 @@ If you encounter any issues, ensure that:
 - Project Facets reflects the correct  Dynamic Web Module
 
 ## Note
-Upon registration, you will need to verify your account. An email will be sent to you from personalfinanceteam@gmail.com containing your verifiation link.
-The email automatically gets sent to junk/spam, please locate it from there.
+Upon registration, you will need to verify your account. An email will be sent to you from personalfinanceteam@gmail.com containing your verification link.
+The email automatically gets sent to junk/spam, please locate it from there. This also applies to password resets!
 
