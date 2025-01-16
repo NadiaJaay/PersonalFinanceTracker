@@ -76,7 +76,7 @@ Personal Finance Tracker is a web application designed to help users track their
 
 ### Access the Application
 
-Open your browser and go to http://localhost:8080/PersonalFinanceTracker.
+Open your browser and go to http://localhost:8080/PersonalFinance/
   - or Right-click the project and select Run As -> Run on Server.
 
 ## Troubleshooting
